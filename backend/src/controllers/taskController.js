@@ -23,11 +23,11 @@ const createTask = async (req, res) => {
 
         const savedTask = await newTask.save();
         await User.findByIdAndUpdate(owner, { $push: { created_Tasks: savedTask._id } });
-        return res.status(201).json({ message: "Task created successfully", task: savedTask });
+        return res.status(201).json({ message: "Task created successfully", task: savedTask, success : true });
 
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: `Internal server error: ${err}` });
+        return res.status(500).json({ message: `Internal server error: ${err}`, success: false });
     }
 }
 
@@ -119,13 +119,36 @@ const assignTask = async (req, res) => {
 
 }
 
+const getAllTask = async (req, res) => {
+    // Try to get userId from params, query, or body for flexibility
+    const userId = req.params.userId || req.query.userId || req.body.userId;
+    console.log("params:", req.params);
+    console.log("userId", userId);
+    if (!userId) {
+        return res.status(401).json({ message: "user's id is required", success: false });
+    }
+
+    try {
+        const result = await User.findOne({ _id: userId }).populate("created_Tasks");
+        if (!result) {
+            return res.status(404).json({ message: "User not found", success: false });
+        }
+        const tasks = result.created_Tasks;
+        return res.status(200).json({ tasks: tasks, success: true });
+
+    } catch (err) {
+        console.error("Error getting Task: ", err);
+        return res.status(500).json({ message: err, success: false });
+    }
+}
 
 
 const taskController = {
     createTask,
     editTask,
     deleteTask,
-    assignTask
+    assignTask,
+    getAllTask
 
 }
 

@@ -27,11 +27,11 @@ const registerUser = async (req, res) => {
             password: hashedPassword
         });
         const savedUser = await newUser.save();
-        return res.status(201).json({ message: "user registered successfully", user: savedUser });
+        return res.status(201).json({ message: "user registered successfully",success : true,  user: savedUser });
 
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: `Internal server error : ${err}` });
+        return res.status(500).json({ message: `Internal server error : ${err}`, success : false });
     }
 
 }
@@ -40,8 +40,11 @@ const registerUser = async (req, res) => {
 
 // function to login a user
 const loginUser = async (req, res) => {
+    console.log("req is comming here")
     const secret = process.env.JWT_SECRET;
+   
     const { email, password } = req.body;
+    console.log(email, password)
     if (!email || !password) {
         return res.status(400).json({ message: "please provide all the fields" });
     }
@@ -57,14 +60,12 @@ const loginUser = async (req, res) => {
         }
         const token = jwt.sign({ id: userExists._id }, secret, { expiresIn: '1h' });
         return res.status(200).json({
-            message: "User logged in successfully", token: token, user: {
-                id: userExists._id
-            }
+            message: "User logged in successfully", token: token, success : true,  user: userExists
         })
 
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: `Internal server error : ${err}` });
+        return res.status(500).json({ message: `Internal server error : ${err}`, success: false });
     }
 
 }
