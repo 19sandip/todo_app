@@ -1,0 +1,160 @@
+.home {
+    
+    height: 100vh;
+    width: 100%;
+}
+
+header h1 {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.container {
+    display: flex;
+     height: 100vh;
+    width: 100%;
+}
+
+.userContainer {
+    display: flex;
+    flex-direction: column;
+    width: 15rem;
+    padding: 2rem;
+    background-color: #f0f0f0;
+    border-radius: 2rem;
+    margin-right: 5rem;
+    height: 30rem;
+
+}
+
+
+.main_container {
+    display: flex;
+    width: 70rem;
+    gap: 2rem;
+    height: aut;
+
+}
+
+
+
+
+.column {
+    background-color: #e2d8d8;
+    padding: 10px;
+    width: 250px;
+    height: 25rem;
+    border-radius: 8px;
+  transition: padding 200ms ease;
+}
+
+
+
+.btn{
+    padding: .5rem;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.task {
+  background-color: rgb(173, 169, 169);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 12px;
+  height: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+
+  transition: all 200ms ease-in-out; /* 🔥 This adds smooth movement */
+}
+.task:hover{
+  background-color: rgb(247, 242, 242);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  height: 1.6rem;
+  padding: 12px;
+  box-shadow: 4px 8px 10px rgba(0, 0, 0, 0.925);
+  transition: all 200ms ease-in-out; /* 🔥 This adds smooth movement */
+}
+
+.task.dragging {
+  background-color: rgb(228, 221, 221);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+   transition: all 500ms ease-in-out;
+}
+
+.addTaskField{
+  text-align: center;
+   width: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: relative;
+}
+
+.addTaskButton{
+text-align: center;
+ width: 50%;
+ padding: 4px;
+ background-color: white;
+ border-radius: 5px;
+ cursor: pointer;
+ 
+}
+
+.addTaskForm{
+  position: absolute;
+  top: 10%;
+  left: 35%;
+  height: 25rem;
+  width: 30rem;
+  background-color: rgb(212, 189, 189);
+  border-radius: 15px;
+
+}
+
+
+.addTaskInputFeild{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+ 
+}
+.addTaskButton{
+  font-size: 1.2rem;
+  padding: 5px;
+
+}
+
+.input{
+   width: 70%;
+    height: 1.8rem;
+   border-radius: 5px;
+    font-size: 1.3rem;
+    padding: 4px;
+
+}
+
+.input::placeholder{
+    font-size: 1.rem;
+}
+
+.taskActions{
+  gap: 3px;
+}
+.actionbtn{
+  padding: 5px;
+  cursor: pointer;
+  
+
+}
+
+
+
