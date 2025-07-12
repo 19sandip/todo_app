@@ -5,7 +5,7 @@ import { AuthContext } from "../../authentication/Authentication";
 
 
 function Login() {
-    const { handleLogin, getTask,setAllTask} = useContext(AuthContext);
+    const { handleLogin,getTask} = useContext(AuthContext);
     const navigate = useNavigate();
     const [emailAndPassword, setEmailAndPassword] = useState({})
 
@@ -18,8 +18,8 @@ function Login() {
             setEmailAndPassword({});
             localStorage.setItem("user", JSON.stringify(res.user))
             localStorage.setItem("token", res.token);
-            const userId = res.user._id;
-            await getTask(userId);
+            localStorage.setItem("isfirstFetch", true);
+            getTask(res.user._id);
             alert(res.message);
             navigate("/")
         }else{

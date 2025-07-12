@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { createContext} from 'react';
-import { useState } from 'react';
+import { createContext, useState, useEffect} from 'react';
+
 
 
 
@@ -14,8 +14,31 @@ const client = axios.create({
 
 
 export const AuthProvider = ({ children}) =>{
+   const [tasks, setTasks] = useState([]);
 
-  const [allTask, setAllTask] = useState({})
+   useEffect(() => {
+      setTimeout(() => {
+        const fetchTasks = async () => {
+        const user = JSON.parse(localStorage.getItem("user")) || null;
+        const isFirstFetch = localStorage.getItem("isfirstFetch");
+  
+        if (user && isFirstFetch === true) {
+          console.log("Fetching tasks for user:", user._id, "isFirstFetch:", isFirstFetch);
+          try {
+            const tasks = await getTask(user._id); // getTask should return stringified tasks or array // if taskData is already an object, skip this line
+            setTasks(tasks);
+           localStorage.setItem("isfirstFetch", false);
+          } catch (error) {
+            console.error("Error fetching tasks:", error);
+          }
+        }
+      };
+  
+      fetchTasks()
+      });
+      ;
+    },[]);
+ 
 
   const handleRegister = async (user) => {
     let {name, email, password} = user;
@@ -91,10 +114,31 @@ export const AuthProvider = ({ children}) =>{
     }
   }
 
+
+  const getTask = async(userId)=>{
+    
+        if(!userId){
+          return JSON.stringify({message: "user's id required"})
+        }
+
+        try{
+          const res = await client.get("/task/get", { params: { userId } });
+          if(res.status === 200){
+            localStorage.setItem("tasks", JSON.stringify(res.data.tasks));
+             setTasks(res.data.tasks);
+          }
+            return res.data.tasks;
+        }catch(err){
+          return JSON.stringify({message: err})
+        }
+  }
+
   const addTask =async (task) =>{
    const {title, description,taskStatus} = task;
-   console.log("this is taskStatus", taskStatus)
-   const user = localStorage.getItem("user");
+   const user = JSON.parse(localStorage.getItem("user"));
+   if(!user){
+    return JSON.stringify({message: "login first"})
+   }
    if(!title){
     return {message : "title is requred"}
    }
@@ -117,28 +161,6 @@ export const AuthProvider = ({ children}) =>{
    
     
   }
-
-
-  const getTask = async (userId) =>{
-    console.log(userId, "userId from context")
-   if(!userId){
-    return {message : "user's id is requred"}
-   }
-   try{
-    const res = await client.get("/task/get", { params: { userId } });
-    console.log("res:", res);
-    if(res.data.success){
-      setAllTask(res.data.tasks);
-    }
-    return res.data.tasks;
-
-   }catch(err){
-    console.error("Error while getting task :", err)
-    return {message : "Error while getting task :", err}
-   }
-  }
-
-
 
   const editTask =async (taskId, newTask) =>{
       if(!taskId){
@@ -184,7 +206,7 @@ export const AuthProvider = ({ children}) =>{
 
 
 
-let handlers = {handleRegister, handleLogin, handleLogout, assignTask, deleteTask, editTask, addTask, getHistory, addHistory, getTask, allTask , setAllTask};
+let handlers = {handleRegister, handleLogin, handleLogout, assignTask, deleteTask, editTask, addTask, getHistory, addHistory,getTask, tasks, setTasks};
 
 return(<AuthContext.Provider value={handlers}>
          {children}

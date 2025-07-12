@@ -4,7 +4,6 @@ import User from "../models/userModel.js";
 //Todo here in create task function => Check if the owner exists in middleware and title are unique
 const createTask = async (req, res) => {
     const { title, description, assigned_user, status, priority, owner } = req.body;
-
     if (!title) {
         return res.status(400).json({ message: "Title is required" });
     }
@@ -122,18 +121,16 @@ const assignTask = async (req, res) => {
 const getAllTask = async (req, res) => {
     // Try to get userId from params, query, or body for flexibility
     const userId = req.params.userId || req.query.userId || req.body.userId;
-    console.log("params:", req.params);
-    console.log("userId", userId);
     if (!userId) {
         return res.status(401).json({ message: "user's id is required", success: false });
     }
 
     try {
-        const result = await User.findOne({ _id: userId }).populate("created_Tasks");
+        const result = await Task.find();
         if (!result) {
             return res.status(404).json({ message: "User not found", success: false });
         }
-        const tasks = result.created_Tasks;
+        const tasks = result;
         return res.status(200).json({ tasks: tasks, success: true });
 
     } catch (err) {
