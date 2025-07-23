@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import userRouter from './src/routes/userRouter.js';
 import taskRouter from './src/routes/taskRouter.js';
 import socketManager from './src/controllers/socketManager.js';
+import historyRouter from './src/routes/historyRouter.js';
 dotenv.config();
 
 
@@ -26,6 +27,7 @@ const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 app.use("/api/user", userRouter);
 app.use("/api/task", taskRouter);
+app.use("/api/history", historyRouter);
 
 
 const start = async () => {

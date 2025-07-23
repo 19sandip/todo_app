@@ -1,0 +1,13 @@
+.myForm {
+  height: 25rem;
+  width: 25rem;
+  background-color: rgb(77, 60, 60);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 20px;
+  gap: 1rem;
+  position: relative;
+}

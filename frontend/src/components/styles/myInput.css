@@ -1,0 +1,12 @@
+.myInput {
+  width: 90%;
+  height: 3rem;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  padding: 10px;
+}
+
+.myInput::placeholder {
+  font-size: 1.4rem;
+  padding: 10px;
+}
