@@ -5,6 +5,7 @@ import { AuthContext } from "../authentication/Authentication.js";
 import MyForm from "../components/Form.js";
 import MyButton from "../components/Button.js";
 import MyInput from "../components/Input.js";
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
   const { handleLogin, getHistory } = useContext(AuthContext);
@@ -22,6 +23,24 @@ function Login() {
     }
     try {
       const res = await handleLogin(emailAndPassword);
+      const decoded = jwtDecode(res.token);
+      const currentTime = Date.now() / 1000;
+      const expiresIn = decoded.exp - currentTime;
+
+      console.log(`Token will expire in ${expiresIn} seconds`);
+
+      // Set timer to logout automatically
+      setTimeout(() => {
+                     localStorage.removeItem("user");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("tasks");
+                    localStorage.removeItem("history");
+                    localStorage.removeItem("assignedTasks");
+                    localStorage.removeItem("teamMates");
+                    localStorage.removeItem("isFirstFetch");
+                    navigate("/login");
+      }, expiresIn * 1000);
+
       if (res.success) {
         setEmailAndPassword({});
         localStorage.setItem("user", JSON.stringify(res.user));

@@ -8,7 +8,6 @@ import MyForm from "../../components/Form.js";
 import MyTextarea from "../../components/Textarea.js";
 import MyButton from "../../components/Button.js";
 import MyInput from "../../components/Input.js";
-
 const server_url = "http://localhost:3003";
 
 function HomePage() {
@@ -38,6 +37,7 @@ function HomePage() {
     taskIdRef.current = taskId;
   }, [taskId]);
 
+   // here all the socket.io events are implimented
   useEffect(() => {
     socketRef.current = io(server_url, {
       transports: ["websocket"], //avoid polling issues
@@ -73,25 +73,28 @@ function HomePage() {
         setDoer(user.name);
         setDoerAction(`${res.task.title} task added`);
 
+        setDescription("");
+        setTitle("");
+        setTaskStatus("");
+        setIsAddTaskFormOpen(false);
         const localStorageTasks =
           JSON.parse(localStorage.getItem("tasks")) || [];
         localStorageTasks.push(res.task);
         localStorage.setItem("tasks", JSON.stringify(localStorageTasks));
+
         setColumns((prevColumns) => {
           const updatedColumns = { ...prevColumns };
+
           Object.keys(updatedColumns).forEach((column) => {
             if (column === res.task.status) {
-              updatedColumns[column].push(res.task);
+              updatedColumns[column] = [...updatedColumns[column], res.task]; // ✅ immutable update
             }
           });
+
           return updatedColumns;
         });
       }
 
-      setDescription("");
-      setTitle("");
-      setTaskStatus("");
-      setIsAddTaskFormOpen(false);
       navigate("/");
     });
 
@@ -484,14 +487,16 @@ function HomePage() {
         };
         setColumns(allTask);
         setHistory(histories);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
+      } catch (err) {
+        console.error("Error fetching tasks:", err);
+        alert(err);
       }
     };
 
     fetchTasks();
   }, []); // Only run on mount or refresh
 
+         //function to show the peer edited info versions simultaneously
   const handleChangeForEdittingTask = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -499,14 +504,14 @@ function HomePage() {
     if (name === "title") setTitle(value);
     if (name === "description") setDescription(value);
 
-    // Use the value from the event, not from state
+    // Used the value directly from the event, not from the state
     socketRef.current.emit("edittingTask", {
       newTitle: name === "title" ? value : title,
       newDes: name === "description" ? value : description,
       taskId,
     });
   };
-
+        // function for doing rest of page blur when  a was openned
   const handleTaskActionFormState = () => {
     if (isAddTaskFormOpen) {
       setIsAddTaskFormOpen(false);
@@ -528,7 +533,7 @@ function HomePage() {
       setEmail("");
     }
   };
-
+      // function for adding task
   const handleAddTask = async (e) => {
     e.preventDefault();
 
@@ -552,6 +557,7 @@ function HomePage() {
     }
   };
 
+   //function for deleting the task
   const handleTaskDelete = async (task) => {
     if (!task) {
       alert("task is required to delete task");
@@ -592,6 +598,7 @@ function HomePage() {
     }
   };
 
+  //function for assigning the task to the teammate
   const assignTask = async (e) => {
     e.preventDefault();
     try {
@@ -605,6 +612,8 @@ function HomePage() {
     }
   };
 
+
+  //function for drag and drop 
   const onDragEndHandler = (result) => {
     const { source, destination } = result;
     //  Only check for destination
@@ -641,6 +650,7 @@ function HomePage() {
     }
   };
 
+      // function for adding members in the group
   const addMember = async (e) => {
     e.preventDefault();
     if (email === user.email) {
@@ -660,6 +670,7 @@ function HomePage() {
     }
   };
 
+     // function for smart assign
   const handleSmartAssign = async (t) => {
     if (t.assigned_user) {
       alert("This task has been already  assigned!");
@@ -697,10 +708,32 @@ function HomePage() {
     }
   };
 
+    // fuction for appling sliding effect on user container in mobile view
+  const handleUserContainerView = () => {
+    const userContainer = document.getElementById("usercontainer");
+    const columns = document.getElementById("columns");
+
+    if (!userContainer.classList.contains("showUserContainer")) {
+      userContainer.classList.add("showUserContainer");
+      columns.style.opacity = ".3";
+    } else {
+      userContainer.classList.remove("showUserContainer");
+      columns.style.opacity = "1";
+    }
+  };
+
   return (
     <div className="home">
+      <div className="header mobileVeiwHeader">
+        <h2 className="todo">Todo app</h2>
+
+        <div className="user" onClick={handleUserContainerView}>
+          {user ? <h2>{user && user.name[0].toUpperCase()}</h2> : <h2>U</h2>}
+        </div>
+      </div>
       <div
         className="container"
+        id="container"
         onClick={() => {
           handleTaskActionFormState();
         }}
@@ -714,7 +747,7 @@ function HomePage() {
               : 1,
         }}
       >
-        <div className="userContainer">
+        <div className="userContainer" id="usercontainer">
           <div>
             {user ? (
               <div
@@ -797,25 +830,28 @@ function HomePage() {
         </div>
 
         <DragDropContext onDragEnd={onDragEndHandler}>
-          <div className="columns">
-            {columns &&
-              Object.entries(columns).map(([columnId, tasks]) => (
-                <MyColumn
-                  columnId={columnId}
-                  tasks={tasks}
-                  setIsAddTaskFormOpen={setIsAddTaskFormOpen}
-                  setIsAssignTaskFormOpen={setIsAssignTaskFormOpen}
-                  setIsEditTaskFormOpen={setIsEditTaskFormOpen}
-                  isAddTaskFormOpen={isAddTaskFormOpen}
-                  isAssignTaskFormOpen={isAssignTaskFormOpen}
-                  isEditTaskFormOpen={isEditTaskFormOpen}
-                  setTaskId={setTaskId}
-                  taskId={taskId}
-                  handleTaskDelete={handleTaskDelete}
-                  setTaskStatus={setTaskStatus}
-                  handleSmartAssign={handleSmartAssign}
-                />
-              ))}
+          <div>
+            <div className="columns" id="columns">
+              {columns &&
+                Object.entries(columns).map(([columnId, tasks]) => (
+                  <MyColumn
+                    key={columnId}
+                    columnId={columnId}
+                    tasks={tasks}
+                    setIsAddTaskFormOpen={setIsAddTaskFormOpen}
+                    setIsAssignTaskFormOpen={setIsAssignTaskFormOpen}
+                    setIsEditTaskFormOpen={setIsEditTaskFormOpen}
+                    isAddTaskFormOpen={isAddTaskFormOpen}
+                    isAssignTaskFormOpen={isAssignTaskFormOpen}
+                    isEditTaskFormOpen={isEditTaskFormOpen}
+                    setTaskId={setTaskId}
+                    taskId={taskId}
+                    handleTaskDelete={handleTaskDelete}
+                    setTaskStatus={setTaskStatus}
+                    handleSmartAssign={handleSmartAssign}
+                  />
+                ))}
+            </div>
           </div>
         </DragDropContext>
       </div>

@@ -42,7 +42,6 @@ const registerUser = async (req, res) => {
 // function to login a user
 const loginUser = async (req, res) => {
   const secret = process.env.JWT_SECRET;
-
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "please provide all the fields" });

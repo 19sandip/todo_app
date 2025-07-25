@@ -19,7 +19,7 @@ const MyColumn = ({
   const teamMates = JSON.parse(localStorage.getItem("teamMates"));
 
   return (
-    <div className={`column column-${columnId}`}>
+    <div className={`column column-${columnId}`} key={columnId}>
       <h2>{columnId}</h2>
       <Droppable
         key={columnId}

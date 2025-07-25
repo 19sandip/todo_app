@@ -2,16 +2,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 10px 5px 10px;
+  padding: 12px;
   background-color: rgb(173, 169, 169);
   border-radius: 10px;
+
   margin-block: 1rem;
   transition: all 200ms ease-in-out;
 }
 
 .card:hover {
   background-color: rgb(247, 242, 242);
-  border-radius: 6px;
+  border-radius: 10px;
   margin-bottom: 30px;
   padding: 12px;
   box-shadow: 4px 8px 10px rgba(0, 0, 0, 0.925);
