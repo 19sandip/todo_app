@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext({});
 
-const server = "http://localhost:3003";
+const server = "todo-dd5tl1q9h-sandeep-kumars-projects-9189288a.vercel.app"
 
 const client = axios.create({
   baseURL: `${server}/api`,
