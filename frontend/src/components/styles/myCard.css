@@ -24,3 +24,11 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transition: all 500ms ease-in-out;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .card:hover {
+    box-shadow: none;
+    transform: none;
+     background-color: rgb(173, 169, 169);
+  }
+}

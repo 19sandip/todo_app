@@ -725,7 +725,7 @@ function HomePage() {
   return (
     <div className="home">
       <div className="header mobileVeiwHeader">
-        <h2 className="todo">Todo app</h2>
+        <h2 className="todoHeadline">Todo app</h2>
 
         <div className="user" onClick={handleUserContainerView}>
           {user ? <h2>{user && user.name[0].toUpperCase()}</h2> : <h2>U</h2>}
