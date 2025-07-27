@@ -2,3 +2,11 @@
   cursor: pointer;
   padding: 5px;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .myButton:hover {
+    box-shadow: none;
+    transform: none;
+     margin-bottom: none;
+  }
+}
