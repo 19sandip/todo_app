@@ -63,8 +63,8 @@ from now you can assign the task to the member and he can also assign the task t
 
 -smart assign ->
 
-To impliment this feature I have stored all the teammates informatin in the localStorage;
-first I am using forOf loop on the teammates array and finding the user with minimum assigned task.
+To implement this feature I have stored all the teammates information in the localStorage;
+First I am using the forOf loop on the teammates array and finding the user with the minimum assigned task.
 After that I simply call the **assignTask** function which is already written for assigning the task with email;
 
 -conflict handling->
@@ -75,3 +75,5 @@ Socket.io made my work easy here I am emitting an event called edittingTask at e
 
 **Link to Live app and demo video**
 Live link : https://todo-app-xi-blue.vercel.app/
+
+Logic document link : https://docs.google.com/document/d/1hQ9Z4HzAqvq89fX9yugBKw6T2ohi5xLRwHbLpGhu7Dk/edit?usp=sharing
