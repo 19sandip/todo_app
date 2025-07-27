@@ -89,7 +89,10 @@ const MyColumn = ({
                         ></MyButton>
                         <MyButton
                           text={"del"}
-                          onClick={() => handleTaskDelete(task)}
+                          onClick={(e) =>{ 
+                            e.stopPropagation();
+                            handleTaskDelete(e, task)
+                          }}
                         ></MyButton>
                       </MyCard>
                     </div>

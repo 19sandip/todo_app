@@ -558,7 +558,8 @@ function HomePage() {
   };
 
    //function for deleting the task
-  const handleTaskDelete = async (task) => {
+  const handleTaskDelete = async (e, task) => {
+   
     if (!task) {
       alert("task is required to delete task");
       return;
@@ -603,7 +604,7 @@ function HomePage() {
     e.preventDefault();
     try {
       socketRef.current.emit("assignTask", {
-        member_email: email,
+        member_email: email.toLocaleLowerCase(),
         taskId,
         userId: user._id,
       });
