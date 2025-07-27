@@ -7,6 +7,6 @@
   .myButton:hover {
     box-shadow: none;
     transform: none;
-     margin-bottom: none;
+     margin-bottom: 0;
   }
 }

@@ -8,7 +8,7 @@ import MyForm from "../../components/Form.js";
 import MyTextarea from "../../components/Textarea.js";
 import MyButton from "../../components/Button.js";
 import MyInput from "../../components/Input.js";
-const server_url = "http://localhost:3003";
+const server_url = "https://todo-app-wt7k.onrender.com";
 
 function HomePage() {
   const user = JSON.parse(localStorage.getItem("user")) || null;
