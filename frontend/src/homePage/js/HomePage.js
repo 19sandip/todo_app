@@ -39,6 +39,7 @@ function HomePage() {
 
    // here all the socket.io events are implimented
   useEffect(() => {
+    
     socketRef.current = io(server_url, {
       transports: ["websocket"], //avoid polling issues
       reconnection: true,

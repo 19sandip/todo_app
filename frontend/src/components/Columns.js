@@ -16,11 +16,10 @@ const MyColumn = ({
   setTaskStatus,
   handleSmartAssign,
 }) => {
-  const teamMates = JSON.parse(localStorage.getItem("teamMates"));
 
   return (
     <div className={`column column-${columnId}`} key={columnId}>
-      <h2>{columnId}</h2>
+      <h2 style={{textTransform : "capitalize"}}>{columnId}</h2>
       <Droppable
         key={columnId}
         droppableId={columnId}
@@ -58,15 +57,6 @@ const MyColumn = ({
                       className={snapshot.isDragging ? "dragging" : ""}
                     >
                       <MyCard task={task}>
-                        <div>
-                          {teamMates.some((u) => {
-                            return u._id === task.assigned_user ? (
-                              <span>Assigned to : {u.name}</span>
-                            ) : (
-                              ""
-                            );
-                          })}
-                        </div>
                         <MyButton
                           text={"asgn"}
                           onClick={() => {

@@ -29,7 +29,7 @@ npm install
 cd backend
 npm install
 
-**Add invironment variables**
+**Add environment variables**
 here use your credendials :
 
 PORT=3003
@@ -45,18 +45,18 @@ npm run dev
 cd frontend
 npm start
 
-**Featurs list and uses guide**
-Here user can :
+**Featurs list and use guides**
+In this app user can :
 add, delete, assign, and edit the task;
 also user can make group of people to handle a project and assign/reassign the task to the group members
 
 **How to use** :
-Firstly if you are new user you have to create a account with your name , email
+First if you are new user you have to create a account with your name , email
 and you have to create a password also then you can login to your account with your registered email and password
 
 After logging in Now you can handle task with the group or solo;
-to create group click on **add member** button and enter the member's email (here member should have to be a user of this todo app already);
-and hit the **add** button after that you will see confirmation message it means you and the member are a part of the group;
+to create group click on **add member** button and enter the member's email ( member should have to be a user of this todo app already);
+and hit the **add** button after that you will see confirmation message it means you have added successfully ;
 from now you can assign the task to the member and he can also assign the task to you. And both of you are allowed to edit and delete the task;
 
 **Logic of smart assign and conflict handling**
@@ -65,11 +65,11 @@ from now you can assign the task to the member and he can also assign the task t
 
 To implement this feature I have stored all the teammates information in the localStorage;
 First I am using the forOf loop on the teammates array and finding the user with the minimum assigned task.
-After that I simply call the **assignTask** function which is already written for assigning the task with email;
+After that I simply call the **assignTask** function which is already written to assign the task with email;
 
 -conflict handling->
 
-**firstly know the conflict**-> 'The conflict is when two teammates are editting the same task at the same time, How will I show them both versions and let them override or accept the peer's version';
+**first know the conflict**-> 'The conflict is when two teammates are editting the same task at the same time, How will I show them both versions and let them edit or accept the peer's version';
 
 Socket.io made my work easy here I am emitting an event called edittingTask at every change(I have not used useState because it was causing an error that is the peer was able to see the edited info one letter later)
 
